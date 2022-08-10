@@ -1,17 +1,13 @@
-//
-//  ViewController.swift
-//  Example
-//
-//  Created by Jhonatan Pulgarin Arias on 10/08/22.
-//
-
 import UIKit
+import ConnectivityFramework
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let service = LoginService()
+        service.login(email: "algo", password: "12234")
     }
 
 
