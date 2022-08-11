@@ -1,8 +1,11 @@
-//
-//  File.swift
-//  
-//
-//  Created by Maury on 11/08/22.
-//
-
 import Foundation
+
+enum ErrorAPI: Error {
+    
+    case unknown
+    case emailAlreadyInUse
+    case invalidEmail
+    case wrongPassword
+    case userNotFound
+}
+

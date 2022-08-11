@@ -7,7 +7,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let service = LoginService()
-        service.login(email: "algo", password: "12234")
+        Task {
+            do {
+                try await service.login(email: "maury.mdin@gmail.com", password: "electronica19")
+                //try await service.createUser(email: "maury.mdin@gmail.com", password: "electronica19")
+            } catch {
+                print(error)
+            }
+        }
+        
     }
 
 

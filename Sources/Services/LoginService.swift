@@ -1,56 +1,40 @@
 import Foundation
-import FirebaseAuth
 
-//MARK: - Enum for Login Type
-enum ProviderType: String {
-    case basic
-    case google
-    case facebook
+//MARK: - LoginManager
+protocol LoginManager {
+    
+    func login(email: String, password: String) async throws
+    func createUser (email: String, password: String) async throws -> String?
 }
 
 // MARK: - Protocol
 public protocol LoginServiceProtocol {
     
-    func login(email: String, password: String, completionError: @escaping ((Error?) -> Void))
+    func login(email: String, password: String) async throws 
 }
 
 public class LoginService {
+    private let loginManager: LoginManager
     
-    //MARK: - Variables
-    
-    private(set) var email: String
-    private(set) var provider: ProviderType
-    
-    init(email: String, provider: ProviderType) {
-        self.email = email
-        self.provider = provider
+    public init() {
+        self.loginManager = FirebaseManager()
     }
-    
 }
 
 // MARK: - LoginServiceProtocol
 extension LoginService: LoginServiceProtocol {
     
-    public func saveDataLogin() {
-        
-        let defaults = UserDefaults.standard
-        defaults.set(email, forKey: "email")
-        defaults.set(provider.rawValue, forKey: "provider")
-        defaults.synchronize()
+    public func login(email: String, password: String) async throws {
+        try await loginManager.login(email: email, password: password)
     }
-    
-    public func login(email: String, password: String, completionError: @escaping ((Error?) -> Void)) {
-        
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if error == nil {
-                completionError(error)
-            } else {
-                Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                    
-                    completionError(error)
-                }
-            }
+    public func createUser (email: String, password: String) async throws {
+        Task {
+            do {
+                let id = try await loginManager.createUser(email: email, password: password)
                 
+            } catch {
+                print("error")
+            }
         }
     }
 }
