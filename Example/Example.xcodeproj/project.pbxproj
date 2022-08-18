@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		368C16EC28A558510042B84C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 368C16EB28A558500042B84C /* GoogleService-Info.plist */; };
 		D075589328A4371100D03CCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075589228A4371100D03CCF /* AppDelegate.swift */; };
 		D075589528A4371100D03CCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075589428A4371100D03CCF /* SceneDelegate.swift */; };
 		D075589728A4371100D03CCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075589628A4371100D03CCF /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		368C16EB28A558500042B84C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D075588F28A4371100D03CCF /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D075589228A4371100D03CCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D075589428A4371100D03CCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				D075589B28A4371200D03CCF /* Assets.xcassets */,
 				D075589D28A4371200D03CCF /* LaunchScreen.storyboard */,
 				D07558A028A4371200D03CCF /* Info.plist */,
+				368C16EB28A558500042B84C /* GoogleService-Info.plist */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D075589F28A4371200D03CCF /* LaunchScreen.storyboard in Resources */,
+				368C16EC28A558510042B84C /* GoogleService-Info.plist in Resources */,
 				D075589C28A4371200D03CCF /* Assets.xcassets in Resources */,
 				D075589A28A4371100D03CCF /* Main.storyboard in Resources */,
 			);
