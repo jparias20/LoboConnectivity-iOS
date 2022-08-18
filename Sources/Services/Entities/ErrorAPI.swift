@@ -7,5 +7,7 @@ enum ErrorAPI: Error {
     case invalidEmail
     case wrongPassword
     case userNotFound
+    case badURL
+    case badBody
 }
 
