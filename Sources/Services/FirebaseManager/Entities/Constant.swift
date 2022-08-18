@@ -1,7 +1,6 @@
 import Foundation
 
-//public typealias OnError = (ErrorAPI?) -> Void
-
-public struct ConnectivityFrameworkConstant {
-    public static var token: String = ""
+struct Constants {
+    static let baseURL = "https://jparias-lobo-api.herokuapp.com"
+    static let registerUserPath = "/registerUser?id=%@"
 }
