@@ -41,17 +41,16 @@ extension LoginService: LoginServiceProtocol {
             }
         }
     }
-        
+    
     public func registerUser(name: String) async throws {
         let data = User(name: name)
         
         do {
-            let response: EmptyResponseAPI = try await URLSessionService
+            let _: EmptyResponseAPI = try await URLSessionService
                 .request(path: Constants.registerUserPath,
                          method: .post,
                          parameters: defaultParameters,
                          data: data)
-            print("")
         } catch {
             print(error)
         }
