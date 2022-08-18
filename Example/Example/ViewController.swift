@@ -6,22 +6,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        failEmail()
-//        trueEmailfailpassword()
-        trueEmail()
+//        trueEmail()
+        registerUser()
     }
     
     func trueEmail() {
         
-        let service = LoginService()
         Task {
             do {
-                let status = try await service.login(email: "maury.mdin@gmail.com", password: "electronica19")
+                let status = try await LoginService.shared.login(email: "maury@gmail.com", password: "electronica19")
                 switch status {
                 case .logged:
                     print("loguear")
                 case .registerIsRequired:
-                    try await service.registerUser(name: "Maury")
+                    try await LoginService.shared.registerUser(name: "Maury")
                 }
             } catch {
                 print(error)
@@ -29,23 +27,10 @@ class ViewController: UIViewController {
         }
     }
     
-    func failEmail() {
-        let service = LoginService()
+    func registerUser() {
         Task {
             do {
-                try await service.login(email: "algo", password: "algo")
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    func trueEmailfailpassword() {
-        
-        let service = LoginService()
-        Task {
-            do {
-                try await service.login(email: "maury.mdin@gmail.com", password: "algo")
+                try await LoginService.shared.registerUser(name: "Maury")
             } catch {
                 print(error)
             }

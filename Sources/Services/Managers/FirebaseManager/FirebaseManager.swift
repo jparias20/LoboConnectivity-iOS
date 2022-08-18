@@ -1,21 +1,14 @@
 import Foundation
 import FirebaseAuth
 
-final class FirebaseManager {
-    
-}
+final class FirebaseManager { }
 
 // MARK: - LoginManager
 extension FirebaseManager: LoginManager {
-    var userId: String {
-        get {
-            "123"
-        }
-        set {
-            "123"
-        }
-    }
     
+    var userId: String {
+        Auth.auth().currentUser?.uid ?? ""
+    }
     
     func login(email: String, password: String) async throws {
         
@@ -40,8 +33,6 @@ extension FirebaseManager: LoginManager {
                 default:
                     continuation.resume(throwing: ErrorAPI.unknown)
                 }
-                
-                    
             }
         }
     }
@@ -51,7 +42,7 @@ extension FirebaseManager: LoginManager {
         return try await withCheckedThrowingContinuation { continuation in
             Auth.auth().createUser(withEmail: email, password: password) { result, error in
                 guard result?.user.uid != nil else { return continuation.resume(throwing: ErrorAPI.unknown) }
-                self.userId = result?.user.uid ?? "123"
+
                 continuation.resume(returning: ())
             }
         }
