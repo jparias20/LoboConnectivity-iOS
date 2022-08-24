@@ -1,7 +1,6 @@
 import Foundation
 
-enum ErrorAPI: Error {
-    
+public enum ErrorAPI: Error {
     case unknown
     case emailAlreadyInUse
     case invalidEmail
