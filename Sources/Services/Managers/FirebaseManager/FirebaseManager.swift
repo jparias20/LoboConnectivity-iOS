@@ -19,6 +19,7 @@ extension FirebaseManager: LoginManager {
         return try await withCheckedThrowingContinuation { continuation in
             Auth.auth().signIn(withEmail: email, password: password) { result, error in
                 guard let error = error else{ return continuation.resume() }
+                debugPrint("FirebaseManager.login error", error.localizedDescription)
                 
                 switch error._code {
                     
@@ -33,7 +34,7 @@ extension FirebaseManager: LoginManager {
                 
                 case 17011:
                     continuation.resume(throwing: ErrorAPI.userNotFound)
-                    
+                                        
                 default:
                     continuation.resume(throwing: ErrorAPI.unknown)
                 }
@@ -45,7 +46,21 @@ extension FirebaseManager: LoginManager {
         
         return try await withCheckedThrowingContinuation { continuation in
             Auth.auth().createUser(withEmail: email, password: password) { result, error in
+                if let error = error {
+                    debugPrint("FirebaseManager.createUser error", error.localizedDescription)
+                    switch error._code {
+                        
+                    case 17026:
+                        continuation.resume(throwing: ErrorAPI.weakPassword)
+                                                
+                    default:
+                        continuation.resume(throwing: ErrorAPI.unknown)
+                    }
+                    return
+                }
                 guard result?.user.uid != nil else { return continuation.resume(throwing: ErrorAPI.unknown) }
+                
+                debugPrint("FirebaseManager.createUser ", email)
 
                 continuation.resume(returning: ())
             }

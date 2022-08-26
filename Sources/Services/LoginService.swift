@@ -56,14 +56,14 @@ extension LoginService: LoginServiceProtocol {
         let data = User(name: name)
         
         do {
-            let response: EmptyResponseAPI = try await requestService
+            let _: EmptyResponseAPI = try await requestService
                 .request(
                     path: Constants.registerUserPath,
                     method: .post,
                     parameters: defaultParameters,
                     data: data
                 )
-            debugPrint("LoginService.registerUser ", response.data ?? "")
+            debugPrint("LoginService.registerUser", name)
             
         } catch {
             throw error

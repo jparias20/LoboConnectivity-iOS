@@ -7,7 +7,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
 //        trueEmail()
-        registerUser()
+//        registerUser()
+        weakPassword()
     }
     
     func trueEmail() {
@@ -31,6 +32,22 @@ class ViewController: UIViewController {
         Task {
             do {
                 try await LoginService.shared.registerUser(name: "Maury")
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func weakPassword() {
+        Task {
+            do {
+                let status = try await LoginService.shared.login(email: "maury@gmail.com", password: "123456789")
+                switch status {
+                case .logged:
+                    print("loguear")
+                case .registerIsRequired:
+                    try await LoginService.shared.registerUser(name: "Maury")
+                }
             } catch {
                 print(error)
             }

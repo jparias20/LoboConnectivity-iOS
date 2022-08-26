@@ -8,5 +8,6 @@ public enum ErrorAPI: Error {
     case userNotFound
     case badURL
     case badBody
+    case weakPassword
 }
 
