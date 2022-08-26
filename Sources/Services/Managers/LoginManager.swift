@@ -1,8 +1,8 @@
 import Foundation
 
-protocol LoginManager {
+protocol LoginManager: ParametersManager {
     
-    var userId: String { get }
+    var isUserLogged: Bool { get }
     
     func login(email: String, password: String) async throws
     func createUser(email: String, password: String) async throws

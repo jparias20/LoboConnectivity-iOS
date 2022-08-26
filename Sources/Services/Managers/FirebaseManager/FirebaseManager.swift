@@ -6,6 +6,10 @@ final class FirebaseManager { }
 // MARK: - LoginManager
 extension FirebaseManager: LoginManager {
     
+    var isUserLogged: Bool {
+        !userId.isEmpty
+    }
+    
     var userId: String {
         Auth.auth().currentUser?.uid ?? ""
     }

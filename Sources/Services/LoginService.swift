@@ -3,6 +3,8 @@ import Foundation
 // MARK: - Protocol
 public protocol LoginServiceProtocol {
     
+    var isUserLogged: Bool { get }
+    
     func login(email: String, password: String) async throws -> LoginStatus
     func registerUser(name: String) async throws
 }
@@ -16,15 +18,23 @@ public class LoginService {
         ]
     }
     
-    private let loginManager: LoginManager = FirebaseManager()
+    private let loginManager: LoginManager
+    private let requestService: RequestService
     
     public static let shared = LoginService()
     
-    private init() {}
+    private init() {
+        loginManager = FirebaseManager()
+        requestService = URLSessionService(parametersManager: loginManager)
+    }
 }
 
 // MARK: - LoginServiceProtocol
 extension LoginService: LoginServiceProtocol {
+    
+    public var isUserLogged: Bool {
+        loginManager.isUserLogged
+    }
     
     public func login(email: String, password: String) async throws -> LoginStatus {
         do {
@@ -37,7 +47,7 @@ extension LoginService: LoginServiceProtocol {
                 return LoginStatus.registerIsRequired
                 
             default:
-                throw error as? ErrorAPI ?? ErrorAPI.unknown
+                throw error
             }
         }
     }
@@ -46,13 +56,17 @@ extension LoginService: LoginServiceProtocol {
         let data = User(name: name)
         
         do {
-            let _: EmptyResponseAPI = try await URLSessionService
-                .request(path: Constants.registerUserPath,
-                         method: .post,
-                         parameters: defaultParameters,
-                         data: data)
+            let response: EmptyResponseAPI = try await requestService
+                .request(
+                    path: Constants.registerUserPath,
+                    method: .post,
+                    parameters: defaultParameters,
+                    data: data
+                )
+            debugPrint("LoginService.registerUser ", response.data ?? "")
+            
         } catch {
-            print(error)
+            throw error
         }
     }
 }

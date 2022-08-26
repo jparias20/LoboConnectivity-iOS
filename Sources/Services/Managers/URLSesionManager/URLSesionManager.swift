@@ -1,8 +1,15 @@
 import Foundation
 
-struct URLSessionService {
+struct URLSessionService: RequestService {
     
-    static func request<T: Decodable, D: Encodable>(
+    var parametersManager: ParametersManager
+    
+    init(parametersManager: ParametersManager) {
+        self.parametersManager = parametersManager
+    }
+    
+    @discardableResult
+    func request<T: Decodable, D: Encodable>(
         path: String,
         method: URLMethod = .get,
         parameters: [String: String]? = nil,
@@ -11,7 +18,7 @@ struct URLSessionService {
         
         guard var components = URLComponents(string: Constants.baseURL) else { throw ErrorAPI.badURL }
         components.path = path
-
+        
         if let parameters = parameters {
             components.queryItems = parameters.map { URLQueryItem(name: $0, value: $1) }
         }
