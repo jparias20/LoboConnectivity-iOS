@@ -66,4 +66,8 @@ extension FirebaseManager: LoginManager {
             }
         }
     }
+    
+    func signOut() async throws {
+        try Auth.auth().signOut()
+    }
 }

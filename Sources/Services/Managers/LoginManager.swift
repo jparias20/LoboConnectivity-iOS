@@ -6,4 +6,5 @@ protocol LoginManager: ParametersManager {
     
     func login(email: String, password: String) async throws
     func createUser(email: String, password: String) async throws
+    func signOut() async throws
 }

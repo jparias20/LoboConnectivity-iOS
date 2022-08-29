@@ -1,5 +1,8 @@
 import Foundation
 
+public typealias CompletionErrorBlock = (ErrorAPI) -> Void
+public typealias CompletionBlock = () -> Void
+
 // MARK: - Protocol
 public protocol LoginServiceProtocol {
     
@@ -7,6 +10,7 @@ public protocol LoginServiceProtocol {
     
     func login(email: String, password: String) async throws -> LoginStatus
     func registerUser(name: String) async throws
+    func signOut() async throws
 }
 
 // MARK: - Service
@@ -68,6 +72,10 @@ extension LoginService: LoginServiceProtocol {
         } catch {
             throw error
         }
+    }
+    
+    public func signOut() async throws {
+        try await loginManager.signOut()
     }
 }
 
