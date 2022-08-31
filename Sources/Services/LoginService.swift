@@ -8,7 +8,7 @@ public protocol LoginServiceProtocol {
     
     var isUserLogged: Bool { get }
     
-    func login(email: String, password: String) async throws -> LoginStatus
+    func login(email: String, password: String) async throws
     func registerUser(name: String) async throws
     func signOut() async throws
     func fetchUser() async throws -> User
@@ -41,15 +41,13 @@ extension LoginService: LoginServiceProtocol {
         loginManager.isUserLogged
     }
     
-    public func login(email: String, password: String) async throws -> LoginStatus {
+    public func login(email: String, password: String) async throws {
         do {
             try await loginManager.login(email: email, password: password)
-            return LoginStatus.logged
         } catch {
             switch error {
             case ErrorAPI.userNotFound:
                 try await createUser(email: email, password: password)
-                return LoginStatus.registerIsRequired
                 
             default:
                 throw error

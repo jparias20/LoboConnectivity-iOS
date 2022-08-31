@@ -7,24 +7,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         fetchUser()
     }
-    
-    func trueEmail() {
         
-        Task {
-            do {
-                let status = try await LoginService.shared.login(email: "maury@gmail.com", password: "electronica19")
-                switch status {
-                case .logged:
-                    print("loguear")
-                case .registerIsRequired:
-                    try await LoginService.shared.registerUser(name: "Maury")
-                }
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
     func registerUser() {
         Task {
             do {
@@ -34,28 +17,11 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    func weakPassword() {
-        Task {
-            do {
-                let status = try await LoginService.shared.login(email: "maury@gmail.com", password: "123456789")
-                switch status {
-                case .logged:
-                    print("loguear")
-                case .registerIsRequired:
-                    try await LoginService.shared.registerUser(name: "Maury")
-                }
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
+        
     func fetchUserCompleteFlow() {
         Task {
             do {
-                let status = try await LoginService.shared.login(email: "test6@gmail.com", password: "123456789")
-                guard case .registerIsRequired = status else { return }
+                try await LoginService.shared.login(email: "test6@gmail.com", password: "123456789")
                 
                 try await LoginService.shared.registerUser(name: "test6")
                 let user = try await LoginService.shared.fetchUser()
