@@ -5,10 +5,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        trueEmail()
-//        registerUser()
-        weakPassword()
+        fetchUser()
     }
     
     func trueEmail() {
@@ -53,5 +50,35 @@ class ViewController: UIViewController {
             }
         }
     }
-}
+    
+    func fetchUserCompleteFlow() {
+        Task {
+            do {
+                let status = try await LoginService.shared.login(email: "test6@gmail.com", password: "123456789")
+                guard case .registerIsRequired = status else { return }
+                
+                try await LoginService.shared.registerUser(name: "test6")
+                let user = try await LoginService.shared.fetchUser()
+                debugPrint("Finished fetchUser", user)
+                
 
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+    
+    func fetchUser() {
+        Task {
+            do {
+                let user = try await LoginService.shared.fetchUser()
+                debugPrint("Finished fetchUser", user)
+                
+
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+    
+}

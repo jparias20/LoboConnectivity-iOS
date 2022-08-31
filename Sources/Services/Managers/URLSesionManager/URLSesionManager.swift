@@ -11,9 +11,9 @@ struct URLSessionService: RequestService {
     @discardableResult
     func request<T: Decodable, D: Encodable>(
         path: String,
-        method: URLMethod = .get,
-        parameters: [String: String]? = nil,
-        data body: D? = nil
+        method: URLMethod,
+        parameters: [String: String]?,
+        data body: D?
     ) async throws -> T {
         
         guard var components = URLComponents(string: Constants.baseURL) else { throw ErrorAPI.badURL }
@@ -35,14 +35,30 @@ struct URLSessionService: RequestService {
         }
         request.httpMethod = method.rawValue
         
-        print(request)
         let (data, response) = try await URLSession.shared.data(for: request)
         
+        debugPrint("--------------------")
+        debugPrint(request)
+        debugPrint(data.prettyPrintedJSONString)
+        debugPrint("--------------------")
+        
         guard (response as? HTTPURLResponse)?.statusCode == 200 else { throw ErrorAPI.unknown }
+        
+        
         
         guard let decodedObj = try? JSONDecoder().decode(T.self, from: data) else { throw ErrorAPI.unknown }
         
         return decodedObj
     }
     
+}
+
+extension Data {
+    var prettyPrintedJSONString: NSString { /// NSString gives us a nice sanitized debugDescription
+            guard let object = try? JSONSerialization.jsonObject(with: self, options: []),
+                  let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted, .sortedKeys]),
+                  let prettyPrintedString = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else { return "" }
+
+            return prettyPrintedString
+        }
 }

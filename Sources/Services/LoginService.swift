@@ -11,6 +11,7 @@ public protocol LoginServiceProtocol {
     func login(email: String, password: String) async throws -> LoginStatus
     func registerUser(name: String) async throws
     func signOut() async throws
+    func fetchUser() async throws -> User
 }
 
 // MARK: - Service
@@ -55,7 +56,7 @@ extension LoginService: LoginServiceProtocol {
             }
         }
     }
-    
+        
     public func registerUser(name: String) async throws {
         let data = User(name: name)
         
@@ -76,6 +77,19 @@ extension LoginService: LoginServiceProtocol {
     
     public func signOut() async throws {
         try await loginManager.signOut()
+    }
+    
+    public func fetchUser() async throws -> User {
+        let response: ResponseAPI<User> = try await requestService.request(
+                path: Constants.userPath,
+                method: .get,
+                parameters: defaultParameters,
+                data: nil as EmptyData?
+            )
+        
+        guard let user = response.data else { throw ErrorAPI(from: response.statusCode) }
+        
+        return user
     }
 }
 
