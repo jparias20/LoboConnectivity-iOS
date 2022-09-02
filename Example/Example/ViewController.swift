@@ -5,7 +5,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchUser()
+        fetchUserCompleteFlow()
     }
         
     func registerUser() {
@@ -21,9 +21,9 @@ class ViewController: UIViewController {
     func fetchUserCompleteFlow() {
         Task {
             do {
-                try await LoginService.shared.login(email: "test6@gmail.com", password: "123456789")
+                try await LoginService.shared.login(email: "test7@gmail.com", password: "123456789")
                 
-                try await LoginService.shared.registerUser(name: "test6")
+                try await LoginService.shared.registerUser(name: "test7")
                 let user = try await LoginService.shared.fetchUser()
                 debugPrint("Finished fetchUser", user)
                 
@@ -46,5 +46,4 @@ class ViewController: UIViewController {
             }
         }
     }
-    
 }

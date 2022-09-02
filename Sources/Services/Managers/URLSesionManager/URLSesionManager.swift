@@ -17,7 +17,7 @@ struct URLSessionService: RequestService {
     ) async throws -> T {
         
         guard var components = URLComponents(string: Constants.baseURL) else { throw ErrorAPI.badURL }
-        components.path = path
+        components.path = Constants.componentURL + path
         
         if let parameters = parameters {
             components.queryItems = parameters.map { URLQueryItem(name: $0, value: $1) }
