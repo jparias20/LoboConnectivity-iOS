@@ -1,6 +1,7 @@
 import Foundation
 
 public typealias CompletionErrorBlock = (ErrorAPI) -> Void
+public typealias CompletionSuccess<T: Decodable> = (T) -> Void
 public typealias CompletionBlock = () -> Void
 
 // MARK: - Protocol
@@ -16,12 +17,6 @@ public protocol LoginServiceProtocol {
 
 // MARK: - Service
 public class LoginService {
-    
-    private var defaultParameters: [String: String] {
-        [
-            "id": loginManager.userId
-        ]
-    }
     
     private let loginManager: LoginManager
     private let requestService: RequestService
@@ -54,7 +49,7 @@ extension LoginService: LoginServiceProtocol {
             }
         }
     }
-        
+    
     public func registerUser(name: String) async throws {
         let data = User(name: name)
         
@@ -63,11 +58,9 @@ extension LoginService: LoginServiceProtocol {
                 .request(
                     path: Constants.registerUserPath,
                     method: .post,
-                    parameters: defaultParameters,
+                    parameters: nil,
                     data: data
-                )
-            debugPrint("LoginService.registerUser", name)
-            
+                )            
         } catch {
             throw error
         }
@@ -79,11 +72,11 @@ extension LoginService: LoginServiceProtocol {
     
     public func fetchUser() async throws -> User {
         let response: ResponseAPI<User> = try await requestService.request(
-                path: Constants.userPath,
-                method: .get,
-                parameters: defaultParameters,
-                data: nil as EmptyData?
-            )
+            path: Constants.userPath,
+            method: .get,
+            parameters: nil,
+            data: nil as EmptyData?
+        )
         
         guard let user = response.data else { throw ErrorAPI(from: response.statusCode) }
         
