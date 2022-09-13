@@ -4,11 +4,14 @@ struct URLSessionService: RequestService {
     
     var parametersManager: ParametersManager
     
+    var defaultParameters: [URLQueryItem] {
+        [URLQueryItem(name: Constants.userIdParamKey, value: parametersManager.userId)]
+    }
+    
     init(parametersManager: ParametersManager) {
         self.parametersManager = parametersManager
     }
     
-    @discardableResult
     func request<T: Decodable, D: Encodable>(
         path: String,
         method: URLMethod,
@@ -19,10 +22,12 @@ struct URLSessionService: RequestService {
         guard var components = URLComponents(string: Constants.baseURL) else { throw ErrorAPI.badURL }
         components.path = Constants.componentURL + path
         
+        var queryItems: [URLQueryItem] = defaultParameters
         if let parameters = parameters {
-            components.queryItems = parameters.map { URLQueryItem(name: $0, value: $1) }
+            queryItems.append(contentsOf: parameters.map { URLQueryItem(name: $0, value: $1) })
         }
         
+        components.queryItems = queryItems
         guard let url = components.url else { throw ErrorAPI.badURL }
         
         var request = URLRequest(url: url)
@@ -50,7 +55,6 @@ struct URLSessionService: RequestService {
         
         return decodedObj
     }
-    
 }
 
 extension Data {

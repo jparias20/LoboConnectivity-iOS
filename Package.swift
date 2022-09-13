@@ -26,6 +26,7 @@ let package = Package(
             name: "ConnectivityFramework",
             dependencies: [
                 .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "FirebaseFirestore", package: "Firebase")
             ],
             path: "Sources"
         )

@@ -1,7 +1,11 @@
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
-final class FirebaseManager { }
+final class FirebaseManager {
+    
+    let db = Firestore.firestore()
+}
 
 // MARK: - LoginManager
 extension FirebaseManager: LoginManager {
@@ -69,5 +73,25 @@ extension FirebaseManager: LoginManager {
     
     func signOut() async throws {
         try Auth.auth().signOut()
+    }
+}
+
+// MARK: - RoomManager
+extension FirebaseManager: RoomManager {
+    
+    func bindToRoom(roomId: String, completion: @escaping CompletionBlock) {
+        
+        db.collection("Room").document(roomId)
+            .addSnapshotListener { documentSnapshot, error in
+              guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+              }
+              guard document.data() != nil else {
+                print("Document data was empty.")
+                return
+              }
+              completion()
+            }
     }
 }

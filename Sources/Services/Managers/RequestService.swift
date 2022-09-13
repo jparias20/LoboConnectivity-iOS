@@ -8,7 +8,7 @@ protocol ParametersManager {
 protocol RequestService {
     
     var parametersManager: ParametersManager { get }
-    
+
     func request<T: Decodable, D: Encodable>(
         path: String,
         method: URLMethod,
